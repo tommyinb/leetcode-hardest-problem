@@ -66,8 +66,7 @@ function getXIntersections(
   question: Question
 ) {
   const delta =
-    Math.pow(currentStep.circle.radius, 2) -
-    Math.pow(y - currentStep.circle.y, 2);
+    currentStep.circle.radius ** 2 - (y - currentStep.circle.y) ** 2;
 
   if (delta < 0) {
     return [];
@@ -108,8 +107,7 @@ function getYIntersections(
   question: Question
 ) {
   const delta =
-    Math.pow(currentStep.circle.radius, 2) -
-    Math.pow(x - currentStep.circle.x, 2);
+    currentStep.circle.radius ** 2 - (x - currentStep.circle.x) ** 2;
 
   if (delta < 0) {
     return [];

@@ -77,7 +77,7 @@ function moveRight(
 ): ArcStep | DownLineStep {
   const arcSteps = question.circles
     .flatMap((circle) => {
-      const delta = Math.pow(circle.radius, 2) - Math.pow(0 - circle.y, 2);
+      const delta = circle.radius ** 2 - (0 - circle.y) ** 2;
 
       if (delta < 0) {
         return [];
@@ -112,9 +112,7 @@ function moveDown(
 ): ArcStep | CornerEndStep {
   const arcSteps = question.circles
     .flatMap((circle) => {
-      const delta =
-        Math.pow(circle.radius, 2) -
-        Math.pow(question.area.width - circle.x, 2);
+      const delta = circle.radius ** 2 - (question.area.width - circle.x) ** 2;
 
       if (delta < 0) {
         return [];
@@ -197,8 +195,7 @@ function getXIntersections(
   question: Question
 ) {
   const delta =
-    Math.pow(currentStep.circle.radius, 2) -
-    Math.pow(y - currentStep.circle.y, 2);
+    currentStep.circle.radius ** 2 - (y - currentStep.circle.y) ** 2;
 
   if (delta < 0) {
     return [];
@@ -239,8 +236,7 @@ function getYIntersections(
   question: Question
 ) {
   const delta =
-    Math.pow(currentStep.circle.radius, 2) -
-    Math.pow(x - currentStep.circle.x, 2);
+    currentStep.circle.radius ** 2 - (x - currentStep.circle.x) ** 2;
 
   if (delta < 0) {
     return [];

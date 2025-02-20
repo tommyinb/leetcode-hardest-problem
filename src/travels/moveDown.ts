@@ -10,9 +10,7 @@ export function moveDown(
 ): ArcStep | CornerEndStep {
   const arcSteps = question.circles
     .flatMap((circle) => {
-      const delta =
-        Math.pow(circle.radius, 2) -
-        Math.pow(question.area.width - circle.x, 2);
+      const delta = circle.radius ** 2 - (question.area.width - circle.x) ** 2;
 
       if (delta < 0) {
         return [];
