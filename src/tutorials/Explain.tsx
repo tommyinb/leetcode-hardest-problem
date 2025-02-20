@@ -3,6 +3,7 @@ import { Drawing } from "../solutions/Drawing";
 import { Exception } from "./Exception";
 import "./Explain.css";
 import { ExplainPath } from "./ExplainPath";
+import { Remind } from "./Remind";
 import { Solution } from "./Solution";
 import { Wrong } from "./Wrong";
 
@@ -170,7 +171,7 @@ export function Explain() {
         </div>
 
         <div>
-          Many people, including the question author, think that we can simply
+          Many people, including the question author, think that they can simply
           join the circle centers together.
         </div>
       </div>
@@ -178,6 +179,10 @@ export function Explain() {
       <Wrong />
 
       <Exception />
+
+      <div className="line" />
+
+      <Remind />
 
       <div className="line" />
 

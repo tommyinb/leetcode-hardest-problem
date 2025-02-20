@@ -15,14 +15,26 @@
   }
 
   header {
+    text-align: center;
+
     h1 {
       margin: 0 0 5px;
-      text-align: center;
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    &:not(:hover) {
+      h1 {
+        a {
+          color: inherit;
+        }
+      }
     }
 
     h3 {
       margin: 0;
-      text-align: center;
     }
   }
 

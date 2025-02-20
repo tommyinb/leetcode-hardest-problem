@@ -8,12 +8,8 @@ export function Exception() {
     <div className="tutorials-Exception">
       <div className="pictured">
         <div className="message">
-          <div>
-            Some people complained that this test case destroyed their solution.
-          </div>
-
           <div className="tricky">
-            <div>This is sooooooo sick! 🤯</div>
+            <div>But geometry is tricky. 🤯</div>
 
             <div className="zoom" style={{ width: 200, height: 200 }}>
               <div className="drawing">
@@ -28,7 +24,7 @@ export function Exception() {
                     }),
                     []
                   )}
-                  scale={100}
+                  scale={70}
                 />
               </div>
             </div>

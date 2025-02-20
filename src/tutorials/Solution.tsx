@@ -3,20 +3,23 @@ import "./Solution.css";
 export function Solution() {
   return (
     <div className="tutorials-Solution">
-      <div>Shape does matter.</div>
+      <div>View code</div>
 
-      <div>
-        Remember to sweep the <b>circumference</b>.
-      </div>
+      <a
+        className="raw"
+        href="https://github.com/tommyinb/leetcode-hardest-problem/blob/master/src/travels/moveStep.ts"
+        target="_blank"
+      >
+        Structured
+      </a>
 
-      <div>
-        <a
-          href="https://github.com/tommyinb/leetcode-hardest-problem/blob/master/src/travels/moveStep.ts"
-          target="_blank"
-        >
-          View my code here
-        </a>
-      </div>
+      <a
+        className="file"
+        href="https://github.com/tommyinb/leetcode-hardest-problem/blob/master/answer/output.ts"
+        target="_blank"
+      >
+        Single File
+      </a>
     </div>
   );
 }

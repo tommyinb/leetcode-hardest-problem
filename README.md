@@ -1,10 +1,10 @@
 # LeetCode's Hardest Problem
 
-According to [zerotrac's rating table](https://zerotrac.github.io/leetcode_problem_rating/), this is the **number-one most difficult question** on [LeetCode](https://leetcode.com/problems/check-if-the-rectangle-corner-is-reachable).
+This problem is rated **the most difficult** on [LeetCode](https://leetcode.com/problems/check-if-the-rectangle-corner-is-reachable) according to [zerotrac's rating table](https://zerotrac.github.io/leetcode_problem_rating/).
 
-![Rating Table](./src/tutorials/rating-table.png)
+![Rating Table](./preview/rating-table.png)
 
-Very few people have successfully solved this problem.
+Very few people have successfully solved this problem. ✌️
 
 ![Submit](./preview/submit.png)
 
@@ -88,6 +88,6 @@ return outputNexts[outputNexts.length - 1].step;
 
 If you want to learn more, I've created a interactive page for you.
 
-<https://tommyinb.github.io/leetcode-hardest-problem/>
+👉 <https://tommyinb.github.io/leetcode-hardest-problem/>
 
 Happy coding! 😊

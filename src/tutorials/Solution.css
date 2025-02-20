@@ -1,6 +1,37 @@
 .tutorials-Solution {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 5px;
+
+  .raw,
+  .file {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .raw {
+    border-color: #0044ff;
+    background-color: #0044ff;
+    color: #fff;
+
+    &:hover {
+      border-color: #00ccff;
+      background-color: #00ccff;
+    }
+  }
+
+  .file {
+    border-color: #ccc;
+    color: #ccc;
+
+    &:hover {
+      background-color: #ccc;
+      color: #444;
+    }
+  }
 }
