@@ -65,7 +65,7 @@ function explore(question: Question) {
   while (path.length < limit) {
     const lastStep = path[path.length - 1];
 
-    const step = nextStep(lastStep, question);
+    const step = moveStep(lastStep, question);
 
     if (!step) {
       break;
@@ -352,7 +352,10 @@ function moveRight(
   };
 }
 
-function nextStep(currentStep: Step, question: Question): Step | undefined {
+function moveStep(
+  currentStep: Step,
+  question: Question
+): Step | undefined {
   switch (currentStep.type) {
     case StepType.RightLine:
       return moveRight(currentStep, question);
@@ -410,3 +413,4 @@ function getCovering(question: Question) {
     })
   );
 }
+

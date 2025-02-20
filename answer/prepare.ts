@@ -1,7 +1,7 @@
-import { Question } from "../questions/question";
-import { getCovering } from "../solutions/getCovering";
-import { explore } from "../travels/explore";
-import { StepType } from "../travels/stepType";
+import { Question } from "../src/questions/question";
+import { getCovering } from "../src/solutions/getCovering";
+import { explore } from "../src/travels/explore";
+import { StepType } from "../src/travels/stepType";
 
 export function canReachCorner(
   xCorner: number,
