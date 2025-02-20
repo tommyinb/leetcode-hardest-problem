@@ -82,16 +82,18 @@ interface DownLineStep {
 function explore(question: Question) {
   const path: Step[] = [{ type: StepType.RightLine, x: 0 }];
 
-  while (path.length < question.circles.length * 2 + 10) {
+  const limit = question.circles.length * 3 + 50;
+
+  while (path.length < limit) {
     const lastStep = path[path.length - 1];
 
-    const nextStep = moveStep(lastStep, question);
+    const step = nextStep(lastStep, question);
 
-    if (!nextStep) {
+    if (!step) {
       break;
     }
 
-    path.push(nextStep);
+    path.push(step);
   }
 
   return path;
@@ -117,10 +119,10 @@ function moveArc(currentStep: ArcStep, question: Question) {
       currentStep.y - currentStep.circle.y,
       currentStep.x - currentStep.circle.x
     ) +
-      2 * Math.PI) %
+      4 * Math.PI) %
     (2 * Math.PI);
 
-  const nexts = [
+  const inputNexts = [
     ...getRightNexts(currentStep, question),
     ...getDownNexts(currentStep, question),
     ...getLeftNexts(currentStep, question),
@@ -128,19 +130,33 @@ function moveArc(currentStep: ArcStep, question: Question) {
     ...getArcNexts(currentStep, question),
   ];
 
-  console.log(currentStep, nexts);
-
-  if (nexts.length <= 0) {
+  if (inputNexts.length <= 0) {
     return undefined;
   }
 
-  nexts.sort(
-    (a, b) =>
-      ((a.angle - currentAngle + 2 * Math.PI) % (2 * Math.PI)) -
-      ((b.angle - currentAngle + 2 * Math.PI) % (2 * Math.PI))
-  );
+  const outputNexts = inputNexts
+    .map((next) => {
+      const nextAngle = (next.angle + 4 * Math.PI) % (2 * Math.PI);
 
-  return nexts[nexts.length - 1].step;
+      const moveAngle = nextAngle - currentAngle;
+
+      const positiveAngle =
+        moveAngle < -0.000001
+          ? (moveAngle + 4 * Math.PI) % (2 * Math.PI)
+          : moveAngle;
+
+      const randomAngle = positiveAngle + Math.random() * 0.000001;
+
+      return {
+        angle: randomAngle,
+        step: next.step,
+      };
+    })
+    .sort((a, b) => a.angle - b.angle);
+
+  console.log(outputNexts);
+
+  return outputNexts[outputNexts.length - 1].step;
 }
 
 interface Next {
@@ -310,28 +326,26 @@ function moveDown(
   question: Question
 ): ArcStep | CornerEndStep {
   const arcSteps = question.circles
-    .map((circle) => {
-      const delta = Math.pow(circle.radius, 2) - Math.pow(0 - circle.x, 2);
+    .flatMap((circle) => {
+      const delta =
+        Math.pow(circle.radius, 2) -
+        Math.pow(question.area.width - circle.x, 2);
 
       if (delta < 0) {
-        return undefined;
+        return [];
       }
 
-      const y = currentStep.y - Math.sqrt(delta);
+      const ys = [circle.y - Math.sqrt(delta), circle.y + Math.sqrt(delta)];
 
-      if (y >= question.area.height) {
-        return undefined;
-      }
-
-      return {
+      return ys.map<ArcStep>((y) => ({
         type: StepType.ArcStep,
-        x: 0,
+        x: question.area.width,
         y,
         circle,
-      };
+      }));
     })
-    .filter((arcStep): arcStep is ArcStep => arcStep !== undefined)
-    .filter((arcStep) => arcStep.y > 0 && arcStep.y < question.area.height)
+    .filter((arcStep) => arcStep.y > currentStep.y)
+    .filter((arcStep) => arcStep.y < question.area.height)
     .sort((a, b) => a.y - b.y);
 
   if (arcSteps.length > 0) {
@@ -352,24 +366,23 @@ function moveRight(
   question: Question
 ): ArcStep | DownLineStep {
   const arcSteps = question.circles
-    .map((circle) => {
+    .flatMap((circle) => {
       const delta = Math.pow(circle.radius, 2) - Math.pow(0 - circle.y, 2);
 
       if (delta < 0) {
-        return undefined;
+        return [];
       }
 
-      const x = circle.x - Math.sqrt(delta);
+      const xs = [circle.x - Math.sqrt(delta), circle.x + Math.sqrt(delta)];
 
-      return {
+      return xs.map<ArcStep>((x) => ({
         type: StepType.ArcStep,
         x,
         y: 0,
         circle,
-      };
+      }));
     })
-    .filter((arcStep): arcStep is ArcStep => arcStep !== undefined)
-    .filter((arcStep) => arcStep.x >= currentStep.x)
+    .filter((arcStep) => arcStep.x > currentStep.x)
     .filter((arcStep) => arcStep.x < question.area.width)
     .sort((a, b) => a.x - b.x);
 
@@ -390,7 +403,7 @@ function moveRight(
 
 
 
-function moveStep(
+function nextStep(
   currentStep: Step,
   question: Question
 ): Step | undefined {

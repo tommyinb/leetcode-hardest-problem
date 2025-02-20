@@ -1,21 +1,23 @@
 import { Question } from "../questions/question";
-import { moveStep } from "./moveStep";
+import { nextStep } from "./moveStep";
 import { Step } from "./step";
 import { StepType } from "./stepType";
 
 export function explore(question: Question) {
   const path: Step[] = [{ type: StepType.RightLine, x: 0 }];
 
-  while (path.length < question.circles.length * 2 + 10) {
+  const limit = question.circles.length * 3 + 50;
+
+  while (path.length < limit) {
     const lastStep = path[path.length - 1];
 
-    const nextStep = moveStep(lastStep, question);
+    const step = nextStep(lastStep, question);
 
-    if (!nextStep) {
+    if (!step) {
       break;
     }
 
-    path.push(nextStep);
+    path.push(step);
   }
 
   return path;

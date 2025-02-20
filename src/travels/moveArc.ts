@@ -10,10 +10,10 @@ export function moveArc(currentStep: ArcStep, question: Question) {
       currentStep.y - currentStep.circle.y,
       currentStep.x - currentStep.circle.x
     ) +
-      2 * Math.PI) %
+      4 * Math.PI) %
     (2 * Math.PI);
 
-  const nexts = [
+  const inputNexts = [
     ...getRightNexts(currentStep, question),
     ...getDownNexts(currentStep, question),
     ...getLeftNexts(currentStep, question),
@@ -21,19 +21,33 @@ export function moveArc(currentStep: ArcStep, question: Question) {
     ...getArcNexts(currentStep, question),
   ];
 
-  console.log(currentStep, nexts);
-
-  if (nexts.length <= 0) {
+  if (inputNexts.length <= 0) {
     return undefined;
   }
 
-  nexts.sort(
-    (a, b) =>
-      ((a.angle - currentAngle + 2 * Math.PI) % (2 * Math.PI)) -
-      ((b.angle - currentAngle + 2 * Math.PI) % (2 * Math.PI))
-  );
+  const outputNexts = inputNexts
+    .map((next) => {
+      const nextAngle = (next.angle + 4 * Math.PI) % (2 * Math.PI);
 
-  return nexts[nexts.length - 1].step;
+      const moveAngle = nextAngle - currentAngle;
+
+      const positiveAngle =
+        moveAngle < -0.000001
+          ? (moveAngle + 4 * Math.PI) % (2 * Math.PI)
+          : moveAngle;
+
+      const randomAngle = positiveAngle + Math.random() * 0.000001;
+
+      return {
+        angle: randomAngle,
+        step: next.step,
+      };
+    })
+    .sort((a, b) => a.angle - b.angle);
+
+  console.log(outputNexts);
+
+  return outputNexts[outputNexts.length - 1].step;
 }
 
 interface Next {
