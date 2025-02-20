@@ -9,24 +9,23 @@ export function moveRight(
   question: Question
 ): ArcStep | DownLineStep {
   const arcSteps = question.circles
-    .map((circle) => {
+    .flatMap((circle) => {
       const delta = Math.pow(circle.radius, 2) - Math.pow(0 - circle.y, 2);
 
       if (delta < 0) {
-        return undefined;
+        return [];
       }
 
-      const x = circle.x - Math.sqrt(delta);
+      const xs = [circle.x - Math.sqrt(delta), circle.x + Math.sqrt(delta)];
 
-      return {
+      return xs.map<ArcStep>((x) => ({
         type: StepType.ArcStep,
         x,
         y: 0,
         circle,
-      };
+      }));
     })
-    .filter((arcStep): arcStep is ArcStep => arcStep !== undefined)
-    .filter((arcStep) => arcStep.x >= currentStep.x)
+    .filter((arcStep) => arcStep.x > currentStep.x)
     .filter((arcStep) => arcStep.x < question.area.width)
     .sort((a, b) => a.x - b.x);
 

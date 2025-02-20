@@ -44,4 +44,14 @@
       background-color: #ffcccc88;
     }
   }
+
+  .result {
+    position: absolute;
+    top: -30px;
+    left: -30px;
+
+    &:not(.correct) {
+      color: #f80;
+    }
+  }
 }

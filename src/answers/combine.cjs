@@ -1,9 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
-const singleFile = "./prepare.ts";
 const inputDirs = ["../questions", "../travels", "../solutions"];
-
+const singleFile = "./prepare.ts";
 const outputFile = "./output.ts";
 
 // Function to read and process a file

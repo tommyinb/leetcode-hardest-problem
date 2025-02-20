@@ -18,6 +18,25 @@
       content: "";
     }
 
+    &.cornerEnd {
+      color: #48f;
+
+      &::before,
+      &::after {
+        background-color: #48f;
+      }
+    }
+
+    &.leftEnd,
+    &.bottomEnd {
+      color: #f44;
+
+      &::before,
+      &::after {
+        background-color: #f44;
+      }
+    }
+
     &::before {
       transform: rotate(45deg);
     }

@@ -1,12 +1,9 @@
-import { useMemo } from "react";
 import { Question } from "../questions/question";
-import { explore } from "./explore";
+import { Step } from "./step";
 import { StepType } from "./stepType";
 import "./Travel.css";
 
-export function Travel({ question, scale }: Props) {
-  const path = useMemo(() => explore(question), [question]);
-
+export function Travel({ path, question, scale }: Props) {
   return (
     <div className="travels-Travel">
       {path.map((step, i) => {
@@ -101,6 +98,7 @@ export function Travel({ question, scale }: Props) {
 }
 
 interface Props {
+  path: Step[];
   question: Question;
   scale: number;
 }

@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { Question } from "../questions/question";
+import { explore } from "../travels/explore";
+import { StepType } from "../travels/stepType";
 import { Travel } from "../travels/Travel";
 import "./Canvas.css";
 import { getCovering } from "./getCovering";
 
-export function Canvas({ question }: Props) {
+export function Canvas({ question, expected }: Props) {
   const width = Math.max(
     question.area.width,
     ...question.circles.map((circle) => circle.x)
@@ -17,6 +19,16 @@ export function Canvas({ question }: Props) {
   const scale = 300 / Math.max(width, height);
 
   const covering = useMemo(() => getCovering(question), [question]);
+
+  const output = useMemo(() => explore(question), [question]);
+
+  const answer = useMemo(
+    () =>
+      covering
+        ? false
+        : output.some((step) => step.type === StepType.CornerEnd),
+    [covering, output]
+  );
 
   return (
     <div
@@ -47,11 +59,16 @@ export function Canvas({ question }: Props) {
         />
       ))}
 
-      {!covering && <Travel question={question} scale={scale} />}
+      {!covering && <Travel path={output} question={question} scale={scale} />}
+
+      <div className={`result ${answer === expected ? "correct" : ""}`}>
+        {answer === expected ? "CORRECT" : "WRONG"}
+      </div>
     </div>
   );
 }
 
 interface Props {
   question: Question;
+  expected: boolean;
 }
