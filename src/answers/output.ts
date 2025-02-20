@@ -1,3 +1,27 @@
+
+
+
+
+
+function canReachCorner(
+  xCorner: number,
+  yCorner: number,
+  circles: number[][]
+): boolean {
+  const question: Question = {
+    area: { width: xCorner, height: yCorner },
+    circles: circles.map(([x, y, radius]) => ({ x, y, radius })),
+  };
+
+  if (getCovering(question)) {
+    return false;
+  }
+
+  const path = explore(question);
+
+  return path.some((step) => step.type === StepType.CornerEnd);
+}
+
 interface Area {
   width: number;
   height: number;
@@ -434,21 +458,5 @@ function getCovering(question: Question) {
         Math.pow(circle.radius, 2)
     )
   );
-}
-
-
-
-
-function canReachCorner(
-  xCorner: number,
-  yCorner: number,
-  circles: number[][]
-): boolean {
-  const path = explore({
-    area: { width: xCorner, height: yCorner },
-    circles: circles.map(([x, y, radius]) => ({ x, y, radius })),
-  });
-
-  return path.some((step) => step.type === StepType.CornerEnd);
 }
 

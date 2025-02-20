@@ -1,8 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
-const inputDirs = ["../questions", "../travels", "../solutions"];
 const singleFile = "./prepare.ts";
+const inputDirs = ["../questions", "../travels", "../solutions"];
+
 const outputFile = "./output.ts";
 
 // Function to read and process a file
@@ -23,6 +24,14 @@ const processFile = (filePath) => {
 const combineFiles = () => {
   let combinedContent = "";
 
+  // Process the single prepare.ts file
+  const prepareFilePath = path.resolve(__dirname, singleFile);
+  if (fs.existsSync(prepareFilePath)) {
+    combinedContent += processFile(prepareFilePath) + "\n";
+  } else {
+    console.warn(`File not found: ${prepareFilePath}`);
+  }
+
   // Process files from input directories
   inputDirs.forEach((dir) => {
     const fullDirPath = path.resolve(__dirname, dir);
@@ -38,14 +47,6 @@ const combineFiles = () => {
       console.warn(`Directory not found: ${fullDirPath}`);
     }
   });
-
-  // Process the single prepare.ts file
-  const prepareFilePath = path.resolve(__dirname, singleFile);
-  if (fs.existsSync(prepareFilePath)) {
-    combinedContent += processFile(prepareFilePath) + "\n";
-  } else {
-    console.warn(`File not found: ${prepareFilePath}`);
-  }
 
   // Write combined content to output file
   fs.writeFileSync(
