@@ -47,6 +47,11 @@ const combineFiles = () => {
     }
   });
 
+  // Remove multiple consecutive empty lines
+  combinedContent = combinedContent.replace(/(\r?\n){3,}/g, "\n\n");
+  // Remove empty lines at the beginning of the output
+  combinedContent = combinedContent.replace(/^(\r?\n)+/, "");
+
   // Write combined content to output file
   fs.writeFileSync(
     path.resolve(__dirname, outputFile),

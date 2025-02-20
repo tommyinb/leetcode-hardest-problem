@@ -1,8 +1,3 @@
-
-
-
-
-
 function canReachCorner(
   xCorner: number,
   yCorner: number,
@@ -33,16 +28,10 @@ interface Circle {
   radius: number;
 }
 
-
-
-
 interface Question {
   area: Area;
   circles: Circle[];
 }
-
-
-
 
 interface ArcStep {
   type: StepType.ArcStep;
@@ -53,31 +42,20 @@ interface ArcStep {
   circle: Circle;
 }
 
-
-
 interface BottomEndStep {
   type: StepType.BottomEnd;
 
   x: number;
 }
 
-
-
 interface CornerEndStep {
   type: StepType.CornerEnd;
 }
-
-
 
 interface DownLineStep {
   type: StepType.DownLine;
   y: number;
 }
-
-
-
-
-
 
 function explore(question: Question) {
   const path: Step[] = [{ type: StepType.RightLine, x: 0 }];
@@ -99,19 +77,11 @@ function explore(question: Question) {
   return path;
 }
 
-
-
 interface LeftEndStep {
   type: StepType.LeftEnd;
 
   y: number;
 }
-
-
-
-
-
-
 
 function moveArc(currentStep: ArcStep, question: Question) {
   const currentAngle =
@@ -153,8 +123,6 @@ function moveArc(currentStep: ArcStep, question: Question) {
       };
     })
     .sort((a, b) => a.angle - b.angle);
-
-  console.log(outputNexts);
 
   return outputNexts[outputNexts.length - 1].step;
 }
@@ -315,12 +283,6 @@ function getCircleIntersections(a: Circle, b: Circle) {
   ];
 }
 
-
-
-
-
-
-
 function moveDown(
   currentStep: DownLineStep,
   question: Question
@@ -354,12 +316,6 @@ function moveDown(
 
   return { type: StepType.CornerEnd };
 }
-
-
-
-
-
-
 
 function moveRight(
   currentStep: RightLineStep,
@@ -396,17 +352,7 @@ function moveRight(
   };
 }
 
-
-
-
-
-
-
-
-function nextStep(
-  currentStep: Step,
-  question: Question
-): Step | undefined {
+function nextStep(currentStep: Step, question: Question): Step | undefined {
   switch (currentStep.type) {
     case StepType.RightLine:
       return moveRight(currentStep, question);
@@ -421,19 +367,10 @@ function nextStep(
   return undefined;
 }
 
-
-
 interface RightLineStep {
   type: StepType.RightLine;
   x: number;
 }
-
-
-
-
-
-
-
 
 type Step =
   | RightLineStep
@@ -455,8 +392,6 @@ enum StepType {
   CornerEnd = "cornerEnd",
 }
 
-
-
 function getCovering(question: Question) {
   return (
     question.circles.find((circle) => {
@@ -475,4 +410,3 @@ function getCovering(question: Question) {
     })
   );
 }
-
