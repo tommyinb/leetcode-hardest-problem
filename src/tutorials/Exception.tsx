@@ -13,7 +13,7 @@ export function Exception() {
           </div>
 
           <div className="tricky">
-            <div>This is sooooooo sick!</div>
+            <div>This is sooooooo sick! 🤯</div>
 
             <div className="zoom" style={{ width: 200, height: 200 }}>
               <div className="drawing">

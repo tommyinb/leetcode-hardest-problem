@@ -1,5 +1,5 @@
 import { Question } from "../questions/question";
-import { nextStep } from "./moveStep";
+import { moveStep } from "./moveStep";
 import { Step } from "./step";
 import { StepType } from "./stepType";
 
@@ -11,7 +11,7 @@ export function explore(question: Question) {
   while (path.length < limit) {
     const lastStep = path[path.length - 1];
 
-    const step = nextStep(lastStep, question);
+    const step = moveStep(lastStep, question);
 
     if (!step) {
       break;

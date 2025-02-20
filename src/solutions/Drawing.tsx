@@ -10,7 +10,11 @@ export function Drawing({ question, scale }: Props) {
           width: question.area.width * scale,
           height: question.area.height * scale,
         }}
-      />
+      >
+        <div className="value">
+          [{question.area.width}, {question.area.height}]
+        </div>
+      </div>
 
       {question.circles.map((circle, index) => (
         <div
@@ -22,7 +26,11 @@ export function Drawing({ question, scale }: Props) {
             width: circle.radius * 2 * scale,
             height: circle.radius * 2 * scale,
           }}
-        />
+        >
+          <div className="value">
+            [{circle.x}, {circle.y}, {circle.radius}]
+          </div>
+        </div>
       ))}
     </>
   );

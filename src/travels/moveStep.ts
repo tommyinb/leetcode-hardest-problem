@@ -5,7 +5,7 @@ import { moveRight } from "./moveRight";
 import { Step } from "./step";
 import { StepType } from "./stepType";
 
-export function nextStep(
+export function moveStep(
   currentStep: Step,
   question: Question
 ): Step | undefined {

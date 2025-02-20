@@ -1,6 +1,24 @@
 .solutions-Drawing {
   position: absolute;
 
+  &.area,
+  &.circle {
+    .value {
+      position: absolute;
+      font-size: 12px;
+      white-space: nowrap;
+      transition: 0.3s;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    &:not(:hover) {
+      .value {
+        opacity: 0;
+      }
+    }
+  }
+
   &.area {
     background-color: #ffccff88;
 
@@ -22,6 +40,11 @@
       top: -5px;
     }
 
+    .value {
+      left: 10%;
+      top: 10%;
+    }
+
     &::after {
       right: -5px;
       bottom: -5px;
@@ -33,5 +56,10 @@
     border: 1px solid #ffffcc;
     border-radius: 50%;
     background-color: #ffffcc88;
+
+    .value {
+      left: 30%;
+      top: 30%;
+    }
   }
 }

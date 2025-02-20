@@ -11,9 +11,10 @@
     .picture {
       position: relative;
 
-      :not(:first-child) {
+      svg {
         position: absolute;
         inset: 0;
+        pointer-events: none;
       }
     }
 
