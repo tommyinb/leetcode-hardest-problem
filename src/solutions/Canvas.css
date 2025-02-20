@@ -7,6 +7,7 @@
     border: 1px solid #ff8888;
     border-radius: 50%;
     background-color: #ffcccc88;
+    pointer-events: none;
   }
 
   .result {

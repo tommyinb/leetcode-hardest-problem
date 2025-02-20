@@ -100,7 +100,7 @@ export function Explain() {
 
       <div className="pictured">
         <div>
-          Until we loop back to the origin. Then we can conclude that it is{" "}
+          If we loop back to the origin, we can conclude that it is{" "}
           <b>unreachable</b>.
         </div>
 

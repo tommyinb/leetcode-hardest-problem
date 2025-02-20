@@ -1,50 +1,93 @@
-# React + TypeScript + Vite
+# LeetCode's Hardest Problem
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+According to [zerotrac's rating table](https://zerotrac.github.io/leetcode_problem_rating/), this is the number-one most difficult question on [LeetCode](https://leetcode.com/problems/check-if-the-rectangle-corner-is-reachable).
 
-Currently, two official plugins are available:
+![Rating Table](./src/tutorials/rating-table.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Very few people have successfully solved this problem.
 
-## Expanding the ESLint configuration
+![Submit](./preview/submit.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Check if the Rectangle Corner is Reachable
 
-- Configure the top-level `parserOptions` property like this:
+Frankly speaking, this question is straightforward. It is considered reachable if we can go from the top-left to the bottom-right. If there is a circle in our way, we just go around it.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+If we loop back to the origin, we can conclude that it is unreachable.
+
+![Reachability](./preview/reachability.png)
+
+## Geometry is Tricky
+
+Although it looks easy, implementation is not an easy task. Therefore, most people, including the question's author, resort to a wrong approach.
+
+![Wrong Solution](./src/tutorials/wrong-header.png)
+![Comment](./src/tutorials/wrong-comment.png)
+
+Sadly, all solutions posted by the community wrongly use topology instead of geometry, and use circle centers instead of circumferences.
+
+![Wrong Method](./preview/wrong-method.png)
+
+This is understandable because using points instead of lines is just one dimension less complex. This convenience blinds people.
+
+![Test Case](./preview/wrong-case.png)
+
+In the above case of only two circles, they enter the rectangle and connect to each other, but they also exit the rectangle right before the corner, leaving the corner reachable. Unless we zoom in 100 times, our eyes can never see this tricky geometry.
+
+## Code It
+
+Go right, then go down, and go around the circles. ([moveStep.ts](./src/travels/moveStep.ts))
+
+```ts
+export function moveStep(currentStep: Step, question: Question) {
+  switch (currentStep.type) {
+    case StepType.RightLine:
+      return moveRight(currentStep, question);
+
+    case StepType.DownLine:
+      return moveDown(currentStep, question);
+
+    case StepType.ArcStep:
+      return moveArc(currentStep, question);
+  }
+
+  return undefined;
+}
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Deal with Geometry
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+"Go around the circles" is intuitive for humans but challenging to implement in code. Without visualizing it on a chart, we are left with just a series of intersection points. ([moveArc.ts](./src/travels/moveArc.ts))
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```ts
+function getArcNexts(currentStep: ArcStep, question: Question) {
+  return question.circles
+    .filter((circle) => circle !== currentStep.circle)
+    .flatMap((circle) => getCircleIntersections(circle, currentStep.circle));
+}
 ```
+
+Equation of locus of circle is taught in school. But they didn't tell us one important thing - sweeping is directional. Therefore, finding the intersection points is not enough. We need to order by angles and take the counter-clockwise turn.
+
+```ts
+const currentAngle = Math.atan2(
+  currentStep.y - currentStep.circle.y,
+  currentStep.x - currentStep.circle.x
+);
+
+const outputNexts = inputNexts
+  .map((next) => ({
+    angle: next.angle - currentAngle,
+    step: next.step,
+  }))
+  .sort((a, b) => a.angle - b.angle);
+
+return outputNexts[outputNexts.length - 1].step;
+```
+
+## Interactive Page
+
+If you want to learn more, I've created a interactive page for you.
+
+<https://github.com/tommyinb/leetcode-hardest-problem>
+
+Happy coding! 😊

@@ -16,6 +16,8 @@ function App() {
       <Explain />
 
       <Solutions className="solutions" />
+
+      <footer>Happy coding! 😊</footer>
     </div>
   );
 }
