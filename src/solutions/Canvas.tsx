@@ -4,24 +4,14 @@ import { explore } from "../travels/explore";
 import { StepType } from "../travels/stepType";
 import { Travel } from "../travels/Travel";
 import "./Canvas.css";
+import { Drawing } from "./Drawing";
 import { getCovering } from "./getCovering";
 
-export function Canvas({ question, expected }: Props) {
-  const width = Math.max(
-    question.area.width,
-    ...question.circles.map((circle) => circle.x)
-  );
-  const height = Math.max(
-    question.area.height,
-    ...question.circles.map((circle) => circle.y)
-  );
-
-  const scale = 300 / Math.max(width, height);
+export function Canvas({ question, expected, size }: Props) {
+  const scale = size / Math.max(question.area.width, question.area.height);
 
   const covering = useMemo(() => getCovering(question), [question]);
-
   const output = useMemo(() => explore(question), [question]);
-
   const answer = useMemo(
     () =>
       covering
@@ -34,35 +24,29 @@ export function Canvas({ question, expected }: Props) {
     <div
       className="solutions-Canvas"
       style={{
-        width: width * scale,
-        height: height * scale,
+        width: question.area.width * scale,
+        height: question.area.height * scale,
       }}
     >
-      <div
-        className="area"
-        style={{
-          width: question.area.width * scale,
-          height: question.area.height * scale,
-        }}
-      />
+      <Drawing question={question} scale={scale} />
 
-      {question.circles.map((circle, index) => (
+      {covering ? (
         <div
-          key={index}
-          className={`circle ${covering === circle ? "covering" : ""}`}
+          className="covering"
           style={{
-            left: (circle.x - circle.radius) * scale,
-            top: (circle.y - circle.radius) * scale,
-            width: circle.radius * 2 * scale,
-            height: circle.radius * 2 * scale,
+            left: (covering.x - covering.radius) * scale,
+            top: (covering.y - covering.radius) * scale,
+            width: covering.radius * 2 * scale,
+            height: covering.radius * 2 * scale,
           }}
         />
-      ))}
-
-      {!covering && <Travel path={output} question={question} scale={scale} />}
+      ) : (
+        <Travel path={output} question={question} scale={scale} />
+      )}
 
       <div className={`result ${answer === expected ? "correct" : ""}`}>
-        {answer === expected ? "CORRECT" : "WRONG"}
+        {expected ? "Reachable" : "Unreachable"}
+        {answer === expected ? "✔️" : "✖️"}
       </div>
     </div>
   );
@@ -71,4 +55,5 @@ export function Canvas({ question, expected }: Props) {
 interface Props {
   question: Question;
   expected: boolean;
+  size: number;
 }

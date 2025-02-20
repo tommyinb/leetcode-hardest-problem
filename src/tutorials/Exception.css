@@ -1,0 +1,31 @@
+.tutorials-Exception {
+  padding-top: 30px;
+  padding-bottom: 100px;
+
+  .pictured {
+    .message {
+      .tricky {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .zoom {
+          position: relative;
+          margin-top: 10px;
+          border: 1px solid #00000044;
+          overflow: hidden;
+
+          .drawing {
+            position: absolute;
+            top: -1400px;
+            left: -1400px;
+          }
+        }
+      }
+    }
+
+    .picture {
+      z-index: -1;
+    }
+  }
+}

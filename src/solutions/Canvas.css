@@ -1,54 +1,22 @@
 .solutions-Canvas {
   position: relative;
 
-  .area,
-  .circle {
+  .covering {
     position: absolute;
-  }
-
-  .area {
-    background-color: #ffccff88;
-
-    &::before,
-    &::after {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      box-sizing: border-box;
-      border: 1px solid #00ffcc;
-      border-radius: 5px;
-      background-color: #00ffcc88;
-      display: block;
-      content: "";
-    }
-
-    &::before {
-      left: -5px;
-      top: -5px;
-    }
-
-    &::after {
-      right: -5px;
-      bottom: -5px;
-    }
-  }
-
-  .circle {
     box-sizing: border-box;
-    border: 1px solid #ffffcc;
+    border: 1px solid #ff8888;
     border-radius: 50%;
-    background-color: #ffffcc88;
-
-    &.covering {
-      border-color: #ff8888;
-      background-color: #ffcccc88;
-    }
+    background-color: #ffcccc88;
   }
 
   .result {
     position: absolute;
-    top: -30px;
-    left: -30px;
+    right: -40px;
+    bottom: -40px;
+
+    &.correct {
+      opacity: 0.3;
+    }
 
     &:not(.correct) {
       color: #f80;

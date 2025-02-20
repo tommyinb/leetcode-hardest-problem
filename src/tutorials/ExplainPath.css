@@ -1,0 +1,9 @@
+.tutorials-ExplainPath {
+  > path {
+    stroke: #000;
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 4;
+    marker-end: url(#arrow);
+  }
+}

@@ -45,8 +45,6 @@ export function moveArc(currentStep: ArcStep, question: Question) {
     })
     .sort((a, b) => a.angle - b.angle);
 
-  console.log(outputNexts);
-
   return outputNexts[outputNexts.length - 1].step;
 }
 
