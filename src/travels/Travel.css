@@ -1,0 +1,33 @@
+.travels-Travel {
+  position: relative;
+
+  .step {
+    position: absolute;
+    padding: 3px;
+    opacity: 0.6;
+
+    &::before,
+    &::after {
+      position: absolute;
+      left: -4px;
+      top: -1px;
+      width: 8px;
+      height: 2px;
+      background-color: #000;
+      display: block;
+      content: "";
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+
+    &.rightLine {
+      top: 0;
+    }
+  }
+}
