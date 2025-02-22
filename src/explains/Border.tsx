@@ -26,9 +26,9 @@ export function Border() {
         <div className="number">2</div>
 
         <div className="text">
-          Next, we search for a path of circles that begins at the top or right
-          side and ends at the bottom or left side. This path will divide the
-          area into two parts.
+          Next, we look for a chain of circles that starts at the top or right
+          side and ends at the bottom or left side. This chain will barricade
+          the area.
         </div>
 
         <div className="drawing">

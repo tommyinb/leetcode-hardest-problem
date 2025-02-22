@@ -11,20 +11,6 @@ export function Solutions({ className }: Props) {
         <Solution
           question={useMemo(
             () => ({
-              area: { width: 500000000, height: 500000000 },
-              circles: [
-                { x: 499980000, y: 699999999, radius: 200000000 },
-                { x: 500020000, y: 300000001, radius: 200000000 },
-              ],
-            }),
-            []
-          )}
-          expected={true}
-        />
-
-        <Solution
-          question={useMemo(
-            () => ({
               area: { width: 8, height: 8 },
               circles: [
                 { x: 1, y: 4, radius: 1 },
@@ -104,6 +90,20 @@ export function Solutions({ className }: Props) {
             () => ({
               area: { width: 4, height: 4 },
               circles: [{ x: 5, y: 5, radius: 1 }],
+            }),
+            []
+          )}
+          expected={true}
+        />
+
+        <Solution
+          question={useMemo(
+            () => ({
+              area: { width: 500000000, height: 500000000 },
+              circles: [
+                { x: 499980000, y: 699999999, radius: 200000000 },
+                { x: 500020000, y: 300000001, radius: 200000000 },
+              ],
             }),
             []
           )}
