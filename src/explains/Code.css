@@ -1,0 +1,8 @@
+.explains-Code {
+  width: 700px;
+
+  pre {
+    margin: 0 !important;
+    background-color: unset !important;
+  }
+}

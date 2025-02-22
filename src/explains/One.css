@@ -1,0 +1,44 @@
+.explains-One {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  &:hover {
+    background-color: #f8f8f8;
+  }
+
+  .idea {
+    flex: 1;
+    position: relative;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    padding: 15px 15px 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .number {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #f84;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .text {
+      flex: 1;
+    }
+
+    .drawing {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

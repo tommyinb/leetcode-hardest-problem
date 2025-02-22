@@ -1,0 +1,42 @@
+.explains-Solution {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  .raw,
+  .file {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+
+    &:hover {
+      border-color: #00ccff;
+      background-color: #00ccff;
+    }
+  }
+
+  .raw {
+    border-color: #ff8800;
+    background-color: #ff8800;
+
+    &:hover {
+      border-color: #ffbb33;
+      background-color: #ffbb33;
+    }
+  }
+
+  .file {
+    border-color: #0044ff;
+    background-color: #0044ff;
+
+    &:hover {
+      border-color: #00ccff;
+      background-color: #00ccff;
+    }
+  }
+}

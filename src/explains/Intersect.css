@@ -1,0 +1,97 @@
+.explains-Intersect {
+  display: grid;
+  grid-template:
+    "upper idea" auto
+    "code idea" 1fr
+    "lower ." auto / auto 1fr;
+
+  .upper {
+    grid-area: upper;
+  }
+
+  .code {
+    grid-area: code;
+  }
+
+  .lower {
+    grid-area: lower;
+  }
+
+  .idea {
+    grid-area: idea;
+
+    .text {
+      position: relative;
+      border-radius: 10px;
+      background-color: #f8f8f8;
+      padding: 15px 15px 15px 20px;
+      z-index: 2;
+
+      .number {
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #f84;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+      }
+    }
+
+    .image {
+      margin-top: 20px;
+      position: relative;
+      width: 300px;
+      height: 400px;
+
+      .drawing {
+        position: absolute;
+        left: 170px;
+        top: 170px;
+        z-index: 1;
+      }
+
+      .zoom {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 200px;
+        height: 200px;
+        border: 1px solid transparent;
+        background-color: #fff;
+        overflow: hidden;
+        z-index: 2;
+        transform: translate(115px, 115px) scale(0.2);
+        opacity: 0;
+        transition: 0.3s cubic-bezier(1, 0.03, 0.73, 0.72);
+
+        .content {
+          position: absolute;
+          top: -940px;
+          left: -940px;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .code,
+    .idea {
+      background-color: #f8f8f8;
+    }
+
+    .idea {
+      .image {
+        .zoom {
+          border-color: #00000044;
+          transform: translate(-25px, -10px) scale(1);
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

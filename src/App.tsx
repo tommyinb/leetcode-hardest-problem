@@ -1,7 +1,8 @@
 import "./App.css";
+import { Detail } from "./explains/Detail";
+import { Explore } from "./explains/Explore";
+import { Solution } from "./explains/Solution";
 import { Solutions } from "./solutions/Solutions";
-import { Explain } from "./tutorials/Explain";
-import { Solution } from "./tutorials/Solution";
 
 function App() {
   return (
@@ -18,9 +19,13 @@ function App() {
         <h3>LeetCode Hardest Problem</h3>
       </header>
 
-      <Explain />
+      <Explore />
+
+      <Solution />
 
       <Solutions className="solutions" />
+
+      <Detail />
 
       <Solution />
 
