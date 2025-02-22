@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const inputDirs = ["../src/questions", "../src/travels", "../src/solutions"];
+const inputDirs = ["../src/questions", "../src/explores"];
 const singleFile = "./prepare.ts";
 const outputFile = "./output.ts";
 

@@ -8,327 +8,7 @@ function canReachCorner(
     circles: circles.map(([x, y, radius]) => ({ x, y, radius })),
   };
 
-  if (getCovering(question)) {
-    return false;
-  }
-
-  const path = explore(question);
-
-  return path.some((step) => step.type === StepType.CornerEnd);
-}
-
-function getCovering(question: Question) {
-  return (
-    question.circles.find((circle) => {
-      const x = BigInt(circle.x);
-      const y = BigInt(circle.y);
-      const radius = BigInt(circle.radius);
-
-      return x * x + y * y <= radius * radius;
-    }) ??
-    question.circles.find((circle) => {
-      const x = BigInt(circle.x - question.area.width);
-      const y = BigInt(circle.y - question.area.height);
-      const radius = BigInt(circle.radius);
-
-      return x * x + y * y <= radius * radius;
-    })
-  );
-}
-
-function explore(question: Question) {
-  const path: Step[] = [{ type: StepType.RightLine, x: 0 }];
-
-  const limit = question.circles.length * 3 + 50;
-
-  while (path.length < limit) {
-    const lastStep = path[path.length - 1];
-
-    const step = moveStep(lastStep, question);
-
-    if (!step) {
-      break;
-    }
-
-    path.push(step);
-  }
-
-  return path;
-}
-
-function moveStep(currentStep: Step, question: Question): Step | undefined {
-  switch (currentStep.type) {
-    case StepType.RightLine:
-      return moveRight(currentStep, question);
-
-    case StepType.DownLine:
-      return moveDown(currentStep, question);
-
-    case StepType.ArcStep:
-      return moveArc(currentStep, question);
-  }
-
-  return undefined;
-}
-
-function moveRight(
-  currentStep: RightLineStep,
-  question: Question
-): ArcStep | DownLineStep {
-  const arcSteps = question.circles
-    .flatMap((circle) => {
-      const delta = circle.radius ** 2 - (0 - circle.y) ** 2;
-
-      if (delta < 0) {
-        return [];
-      }
-
-      const xs = [circle.x - Math.sqrt(delta), circle.x + Math.sqrt(delta)];
-
-      return xs.map<ArcStep>((x) => ({
-        type: StepType.ArcStep,
-        x,
-        y: 0,
-        circle,
-      }));
-    })
-    .filter((arcStep) => arcStep.x > currentStep.x)
-    .filter((arcStep) => arcStep.x < question.area.width)
-    .sort((a, b) => a.x - b.x);
-
-  if (arcSteps.length > 0) {
-    return arcSteps[0];
-  }
-
-  return {
-    type: StepType.DownLine,
-    y: 0,
-  };
-}
-
-function moveDown(
-  currentStep: DownLineStep,
-  question: Question
-): ArcStep | CornerEndStep {
-  const arcSteps = question.circles
-    .flatMap((circle) => {
-      const delta = circle.radius ** 2 - (question.area.width - circle.x) ** 2;
-
-      if (delta < 0) {
-        return [];
-      }
-
-      const ys = [circle.y - Math.sqrt(delta), circle.y + Math.sqrt(delta)];
-
-      return ys.map<ArcStep>((y) => ({
-        type: StepType.ArcStep,
-        x: question.area.width,
-        y,
-        circle,
-      }));
-    })
-    .filter((arcStep) => arcStep.y > currentStep.y)
-    .filter((arcStep) => arcStep.y < question.area.height)
-    .sort((a, b) => a.y - b.y);
-
-  if (arcSteps.length > 0) {
-    return arcSteps[0];
-  }
-
-  return { type: StepType.CornerEnd };
-}
-
-function moveArc(currentStep: ArcStep, question: Question) {
-  const currentAngle =
-    (Math.atan2(
-      currentStep.y - currentStep.circle.y,
-      currentStep.x - currentStep.circle.x
-    ) +
-      4 * Math.PI) %
-    (2 * Math.PI);
-
-  const inputNexts = [
-    ...getRightNexts(currentStep, question),
-    ...getDownNexts(currentStep, question),
-    ...getLeftNexts(currentStep, question),
-    ...getBottomNexts(currentStep, question),
-    ...getArcNexts(currentStep, question),
-  ];
-
-  if (inputNexts.length <= 0) {
-    return undefined;
-  }
-
-  const outputNexts = inputNexts
-    .map((next) => {
-      const nextAngle = (next.angle + 4 * Math.PI) % (2 * Math.PI);
-
-      const moveAngle = nextAngle - currentAngle;
-
-      const positiveAngle =
-        moveAngle < -0.000001
-          ? (moveAngle + 4 * Math.PI) % (2 * Math.PI)
-          : moveAngle;
-
-      const randomAngle = positiveAngle + Math.random() * 0.000001;
-
-      return {
-        angle: randomAngle,
-        step: next.step,
-      };
-    })
-    .sort((a, b) => a.angle - b.angle);
-
-  return outputNexts[outputNexts.length - 1].step;
-}
-
-function getRightNexts(currentStep: ArcStep, question: Question): Next[] {
-  return getXIntersections(currentStep, 0, question).map((intersection) => ({
-    angle: intersection.angle,
-    step: { type: StepType.RightLine, x: intersection.x },
-  }));
-}
-
-function getXIntersections(
-  currentStep: ArcStep,
-  y: number,
-  question: Question
-) {
-  const delta =
-    currentStep.circle.radius ** 2 - (y - currentStep.circle.y) ** 2;
-
-  if (delta < 0) {
-    return [];
-  }
-
-  const xs = [
-    currentStep.circle.x + Math.sqrt(delta),
-    currentStep.circle.x - Math.sqrt(delta),
-  ];
-
-  return xs
-    .filter((x) => x >= 0 && x <= question.area.width)
-    .map((x) => {
-      const angle = Math.atan2(
-        y - currentStep.circle.y,
-        x - currentStep.circle.x
-      );
-
-      return {
-        x,
-        angle: angle,
-      };
-    });
-}
-
-function getDownNexts(currentStep: ArcStep, question: Question): Next[] {
-  return getYIntersections(currentStep, question.area.width, question).map(
-    (intersection) => ({
-      angle: intersection.angle,
-      step: { type: StepType.DownLine, y: intersection.y },
-    })
-  );
-}
-
-function getYIntersections(
-  currentStep: ArcStep,
-  x: number,
-  question: Question
-) {
-  const delta =
-    currentStep.circle.radius ** 2 - (x - currentStep.circle.x) ** 2;
-
-  if (delta < 0) {
-    return [];
-  }
-
-  const ys = [
-    currentStep.circle.y + Math.sqrt(delta),
-    currentStep.circle.y - Math.sqrt(delta),
-  ];
-
-  return ys
-    .filter((y) => y >= 0 && y <= question.area.height)
-    .map((y) => {
-      const angle = Math.atan2(
-        y - currentStep.circle.y,
-        x - currentStep.circle.x
-      );
-
-      return {
-        y,
-        angle: angle,
-      };
-    });
-}
-
-function getLeftNexts(currentStep: ArcStep, question: Question): Next[] {
-  return getYIntersections(currentStep, 0, question).map((intersection) => ({
-    angle: intersection.angle,
-    step: { type: StepType.LeftEnd, y: intersection.y },
-  }));
-}
-
-function getBottomNexts(currentStep: ArcStep, question: Question): Next[] {
-  return getXIntersections(currentStep, question.area.height, question).map(
-    (intersection) => ({
-      angle: intersection.angle,
-      step: { type: StepType.BottomEnd, x: intersection.x },
-    })
-  );
-}
-
-function getArcNexts(currentStep: ArcStep, question: Question) {
-  return question.circles
-    .filter((circle) => circle !== currentStep.circle)
-    .flatMap((circle) =>
-      getCircleIntersections(circle, currentStep.circle)
-        .filter(
-          (intersection) =>
-            intersection.x > 0 &&
-            intersection.x < question.area.width &&
-            intersection.y > 0 &&
-            intersection.y < question.area.height
-        )
-        .map<Next>((intersection) => {
-          const circleAngle = Math.atan2(
-            intersection.y - currentStep.circle.y,
-            intersection.x - currentStep.circle.x
-          );
-
-          return {
-            angle: circleAngle,
-            step: { type: StepType.ArcStep, ...intersection, circle },
-          };
-        })
-    );
-}
-
-function getCircleIntersections(a: Circle, b: Circle) {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const d = Math.sqrt(dx * dx + dy * dy);
-
-  if (d > a.radius + b.radius || d < Math.abs(a.radius - b.radius)) {
-    return [];
-  }
-
-  const a2 = (a.radius * a.radius - b.radius * b.radius + d * d) / (2 * d);
-  const h = Math.sqrt(a.radius * a.radius - a2 * a2);
-
-  const xm = a.x + (a2 * dx) / d;
-  const ym = a.y + (a2 * dy) / d;
-
-  const xs1 = xm + (h * dy) / d;
-  const ys1 = ym - (h * dx) / d;
-
-  const xs2 = xm - (h * dy) / d;
-  const ys2 = ym + (h * dx) / d;
-
-  return [
-    { x: xs1, y: ys1 },
-    { x: xs2, y: ys2 },
-  ];
+  return !explore(question);
 }
 
 interface Area {
@@ -347,62 +27,149 @@ interface Question {
   circles: Circle[];
 }
 
-interface ArcStep {
-  type: StepType.ArcStep;
+function explore(question: Question): Path | undefined {
+  const startPaths: Path[] = [];
+  const endPaths: Path[] = [];
 
-  x: number;
-  y: number;
+  const currentCircles: Circle[] = [];
 
-  circle: Circle;
+  for (const circle of question.circles) {
+    if (pointCovering(0, 0, circle)) {
+      return { circles: [circle] };
+    }
+
+    if (pointCovering(question.area.width, question.area.height, circle)) {
+      return { circles: [circle] };
+    }
+
+    const start =
+      intersectingY(circle, 0, question.area) ||
+      intersectingX(circle, question.area.width, question.area);
+    if (start) {
+      startPaths.push({ circles: [circle] });
+    }
+
+    const end =
+      intersectingY(circle, question.area.height, question.area) ||
+      intersectingX(circle, 0, question.area);
+    if (end) {
+      endPaths.push({ circles: [circle] });
+    }
+
+    if (start && end) {
+      return { circles: [circle] };
+    }
+
+    if (!start && !end) {
+      currentCircles.push(circle);
+    }
+  }
+
+  for (const startPath of startPaths) {
+    const startCircle = startPath.circles[0];
+    for (const endPath of endPaths) {
+      const endCircle = endPath.circles[0];
+      if (intersectingCircle(startCircle, endCircle, question.area)) {
+        return { circles: [startCircle, endCircle] };
+      }
+    }
+  }
+
+  let currentCircle: Circle | undefined;
+  while ((currentCircle = currentCircles.shift())) {
+    let targetPath: Path | undefined = undefined;
+
+    for (const startPath of startPaths) {
+      const pathCircle = startPath.circles[startPath.circles.length - 1];
+      if (intersectingCircle(currentCircle, pathCircle, question.area)) {
+        startPath.circles.push(currentCircle);
+
+        targetPath = startPath;
+      }
+    }
+
+    for (const endPath of endPaths) {
+      const pathCircle = endPath.circles[endPath.circles.length - 1];
+      if (intersectingCircle(currentCircle, pathCircle, question.area)) {
+        if (targetPath) {
+          return {
+            circles: [...targetPath.circles, ...endPath.circles.reverse()],
+          };
+        }
+
+        endPath.circles.push(currentCircle);
+      }
+    }
+  }
+
+  return undefined;
 }
 
-interface BottomEndStep {
-  type: StepType.BottomEnd;
+function intersectingCircle(
+  circle1: Circle,
+  circle2: Circle,
+  area: Area
+) {
+  const dx = BigInt(circle1.x - circle2.x);
+  const dy = BigInt(circle1.y - circle2.y);
 
-  x: number;
+  const radius2 = circle1.radius + circle2.radius;
+
+  if (dx * dx + dy * dy > radius2 ** 2) {
+    return false;
+  }
+
+  const midpointX =
+    (circle1.x * circle2.radius + circle2.x * circle1.radius) / radius2;
+  const midPointY =
+    (circle1.y * circle2.radius + circle2.y * circle1.radius) / radius2;
+
+  if (
+    midpointX < 0 ||
+    midpointX > area.width ||
+    midPointY < 0 ||
+    midPointY > area.height
+  ) {
+    return false;
+  }
+
+  return true;
 }
 
-interface CornerEndStep {
-  type: StepType.CornerEnd;
+function intersectingX(circle: Circle, x: number, area: Area) {
+  const dx = circle.x - x;
+  if (Math.abs(dx) <= circle.radius) {
+    const xy = (circle.radius ** 2 - dx ** 2) ** 0.5;
+    const y1 = circle.y - xy;
+    const y2 = circle.y + xy;
+    if ((0 < y1 && y1 < area.height) || (0 < y2 && y2 < area.height)) {
+      return true;
+    }
+  }
 }
 
-interface DownLineStep {
-  type: StepType.DownLine;
-  y: number;
+function intersectingY(circle: Circle, y: number, area: Area) {
+  const dy = circle.y - y;
+  if (Math.abs(dy) <= circle.radius) {
+    const yx = (circle.radius ** 2 - dy ** 2) ** 0.5;
+    const x1 = circle.x - yx;
+    const x2 = circle.x + yx;
+    return (0 < x1 && x1 < area.width) || (0 < x2 && x2 < area.width);
+  } else {
+    return false;
+  }
 }
 
-interface LeftEndStep {
-  type: StepType.LeftEnd;
-
-  y: number;
+interface Path {
+  circles: Circle[];
 }
 
-interface Next {
-  angle: number;
-  step: Step;
+function pointCovering(x: number, y: number, circle: Circle) {
+  const dx = BigInt(x - circle.x);
+  const dy = BigInt(y - circle.y);
+
+  return (
+    BigInt(dx) * BigInt(dx) + BigInt(dy) * BigInt(dy) <= circle.radius ** 2
+  );
 }
 
-interface RightLineStep {
-  type: StepType.RightLine;
-  x: number;
-}
-
-type Step =
-  | RightLineStep
-  | DownLineStep
-  | ArcStep
-  | CornerEndStep
-  | LeftEndStep
-  | BottomEndStep;
-
-enum StepType {
-  RightLine = "rightLine",
-  DownLine = "downLine",
-
-  ArcStep = "arcStep",
-
-  LeftEnd = "leftEnd",
-  BottomEnd = "bottomEnd",
-
-  CornerEnd = "cornerEnd",
-}

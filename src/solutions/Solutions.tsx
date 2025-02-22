@@ -11,6 +11,61 @@ export function Solutions({ className }: Props) {
         <Solution
           question={useMemo(
             () => ({
+              area: { width: 500000000, height: 500000000 },
+              circles: [
+                { x: 499980000, y: 699999999, radius: 200000000 },
+                { x: 500020000, y: 300000001, radius: 200000000 },
+              ],
+            }),
+            []
+          )}
+          expected={true}
+        />
+
+        <Solution
+          question={useMemo(
+            () => ({
+              area: { width: 8, height: 8 },
+              circles: [
+                { x: 1, y: 4, radius: 1 },
+                { x: 3, y: 4, radius: 1 },
+                { x: 5, y: 4, radius: 1 },
+                { x: 7, y: 4, radius: 1 },
+              ],
+            }),
+            []
+          )}
+          expected={false}
+        />
+
+        <Solution
+          question={useMemo(
+            () => ({
+              area: { width: 20, height: 100 },
+              circles: [
+                { x: 1, y: 102, radius: 18 },
+                { x: 50, y: 60, radius: 48 },
+              ],
+            }),
+            []
+          )}
+          expected={false}
+        />
+
+        <Solution
+          question={useMemo(
+            () => ({
+              area: { width: 5, height: 7 },
+              circles: [{ x: 2, y: 2, radius: 7 }],
+            }),
+            []
+          )}
+          expected={false}
+        />
+
+        <Solution
+          question={useMemo(
+            () => ({
               area: { width: 3, height: 4 },
               circles: [{ x: 2, y: 1, radius: 1 }],
             }),
