@@ -57,10 +57,10 @@ export function Intersect() {
           <div className="number">A</div>
 
           <div>
-            This problem is full of tricky test cases. For example, even when
-            two circles touch the border of the area and intersect, their
-            intersection may extend beyond the area, causing no blockage. You
-            won't notice it unless you zoooooooom in! 🤯
+            This problem is filled with tricky test cases. For example, even
+            when the following two circles touch the borders and intersect,
+            their intersection is outside the area, causing no blockage. You
+            wouldn't even notice it unless you zoom in! 🤯
           </div>
         </div>
 

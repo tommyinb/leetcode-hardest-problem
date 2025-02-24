@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { Drawing } from "../solutions/Drawing";
 import { Code } from "./Code";
-import "./Overflow.css";
+import "./Precision.css";
 
-export function Overflow() {
+export function Precision() {
   return (
-    <div className="explains-Overflow">
+    <div className="explains-Precision">
       <Code
         text={`function pointCovering(x: number, y: number, circle: Circle) {
   const dx = BigInt(x - circle.x);
@@ -21,8 +21,8 @@ export function Overflow() {
         <div className="number">B</div>
 
         <div className="text">
-          They are just so evil that they even put huge numbers into the test,
-          stopping you from passing the test cases.
+          They are just so evil that they even use huge numbers, causing you to
+          lose precision in calculations and fail the test cases.
         </div>
 
         <div className="drawing">

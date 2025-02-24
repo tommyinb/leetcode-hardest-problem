@@ -12,13 +12,13 @@ Learn more 👉 <https://tommyinb.github.io/leetcode-hardest-problem/>
 
 ## Check if the Rectangle Corner is Reachable
 
-In fact, this question can be easily solved by DFS and simple geometry. We just need check if the circles can be connected together blocking all the path from origin to corner.
+In fact, this question can be easily solved by BFS and simple geometry. We just need check if the circles can be connected together blocking all the path from origin to corner.
 
 ![Question](./preview/question.png)
 
 ## Beats 100%
 
-What makes my solution unique is the use of bidirectional DFS. Instead of only progressing forward from the start, it also traces backward from the end. This reduces the search space, resulting in faster performance with minimal added complexity.
+What makes my solution unique is the restructuring of the search algorithm. Instead of only progressing forward from the start, it also traces backward from the end. This significantly reduces the search space, resulting in much faster performance with minimal added complexity.
 
 ```ts
 while ((currentCircle = currentCircles.shift())) {

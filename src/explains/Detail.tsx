@@ -1,6 +1,6 @@
 import { Code } from "./Code";
 import { Intersect } from "./Intersect";
-import { Overflow } from "./Overflow";
+import { Precision } from "./Precision";
 
 export function Detail() {
   return (
@@ -12,7 +12,7 @@ export function Detail() {
 `}
       />
 
-      <Overflow />
+      <Precision />
     </div>
   );
 }
