@@ -10,6 +10,10 @@ Fortunately, I managed to achieve a "beats 100%" score. ✌️
 
 Learn more 👉 <https://tommyinb.github.io/leetcode-hardest-problem/>
 
+## Programming Languages
+
+I've also implemented the solution in [C#](https://github.com/tommyinb/leetcode-hardest-problem-csharp) and [Java](https://github.com/tommyinb/leetcode-hardest-problem-java). Feel free to check them out if you are not familiar with TypeScript.
+
 ## Check if the Rectangle Corner is Reachable
 
 In fact, this question can be easily solved by BFS and simple geometry. We just need check if the circles can be connected together blocking all the path from origin to corner.
