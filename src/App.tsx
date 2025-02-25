@@ -16,7 +16,7 @@ function App() {
             Check if the Rectangle Corner is Reachable
           </a>
         </h1>
-        <h3>LeetCode Hardest Problem</h3>
+        <h3>LeetCode Question 3235</h3>
       </header>
 
       <Explore />

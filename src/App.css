@@ -21,14 +21,9 @@
       margin: 0 0 5px;
 
       a {
-        text-decoration: none;
-      }
-    }
-
-    &:not(:hover) {
-      h1 {
-        a {
+        &:not(:hover) {
           color: inherit;
+          text-decoration: none;
         }
       }
     }
